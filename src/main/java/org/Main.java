@@ -1,22 +1,46 @@
 package org;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
-import org.model.Despesa;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import org.utils.HibernateUtil;
 
-public class Main {
+import java.io.IOException;
+
+public class Main extends Application {
+
+    @Override
+    public void start(Stage stage) {
+        try {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/hello-view.fxml"));
+
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+
+            // Configurações da Janela
+            stage.setTitle("Sistema de Gerenciamento");
+            stage.setScene(scene);
+            stage.centerOnScreen(); // Centraliza a janela ao abrir
+            stage.show();
+
+        } catch (IOException e) {
+            System.err.println("ERRO CRÍTICO: Não foi possível carregar a interface gráfica.");
+            System.err.println("Verifique se o arquivo .fxml está na pasta 'resources' correta.");
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void stop() throws Exception {
+        System.out.println("Encerrando aplicação...");
+        HibernateUtil.shutdown(); // Fecha o Pool de conexões do banco
+        super.stop();
+    }
+
     public static void main(String[] args) {
-
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("unidade-jpa");
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        Despesa user = new Despesa();
-        user.setNome("João Silva");
-        user.setEmail("joaozindugrau@gmail.com");
-        user.setSenha("123456");
-        em.persist(user);
-        em.getTransaction().commit();
-        em.close();
+        launch(args); // Inicia o ciclo de vida do JavaFX
     }
 }
