@@ -1,21 +1,23 @@
 package org.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
+import java.time.LocalDate;
+
 @Entity
-public class usuario {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Despesa {
+
     @Id
-    @GeneratedValue
-    private long id;
-    private String nome;
-    private String email;
-    private String senha;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    private String descricao;
+    private double valor;
+    private LocalDate data;
+    private String categoria;
 }
